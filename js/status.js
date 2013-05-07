@@ -10,7 +10,7 @@ function Status(onFinish) {
         $('#status-modal').hide();
         onFinish();
     }
-    
+
     $("#status-modal").modal({ show:true, keyboard:false, backdrop:false });
     $("#status-modal").show();
     $("#progress-bar").css("width", "0%");
