@@ -20,7 +20,7 @@ function EventsList() {
  * to internal format, that stores only the fields that are used.
  **/
 EventsList.prototype.addEvent = function(songkickArtist, songkickEvent) {
-    var eventCity = songkickEvent.location.city;
+    var eventCity = songkickEvent.location ? songkickEvent.location.city : "";
     var lastComma = eventCity.lastIndexOf(",");
     
     var city = $.trim(eventCity.substring(0, lastComma));
@@ -29,14 +29,14 @@ EventsList.prototype.addEvent = function(songkickArtist, songkickEvent) {
     var event = {
         artist : songkickArtist.displayName,
         location : {
-            lat : songkickEvent.location.lat,
-            lng : songkickEvent.location.lng
+            lat : songkickEvent.location ? songkickEvent.location.lat : 0,
+            lng : songkickEvent.location ? songkickEvent.location.lng : 0
         },
-        venue : songkickEvent.venue.displayName,
+        venue : songkickEvent.venue ? songkickEvent.venue.displayName : "",
         type : songkickEvent.type,
         city : city,
         country : country,
-        startDate : new Date(songkickEvent.start.date),
+        startDate : new Date(songkickEvent.start ? songkickEvent.start.date : Date.now()),
         tags: songkickArtist.tags        
     }
     

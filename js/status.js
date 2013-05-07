@@ -4,8 +4,12 @@
  * optional function that should be called when the status has reached 100%.
  **/
 function Status(onFinish) {
+    onFinish = onFinish || function() {};
     this.processed = 0;
-    this.onFinish = onFinish || function() {};
+    this.finish = function () {
+        $('#status-modal').hide();
+        onFinish();
+    }
     
     $("#status-modal").modal({ show:true, keyboard:false, backdrop:false });
     $("#status-modal").show();
@@ -20,20 +24,20 @@ Status.prototype.setTotal = function(total) {
 }
 
 /**
- * Incremets the progress bar and displays the info text.
+ * Increments the progress bar and displays the info text.
  **/
 Status.prototype.increment = function(info) {
     this.processed++;
-    
+
+    if (this.processed / this.total * 100 > 98 && this.processed < this.total) {
+        window.clearTimeout(this.timeout);
+        this.timeout = window.setTimeout($.proxy(this.finish, this), 2000)
+    }
+
     $("#progress-bar").css("width", Math.floor( (this.processed / this.total) * 100 ) + "%");
     $("#progress-info").html(info);
     
-    if (this.processed == this.total) {        
-        function finish() {
-            $('#status-modal').hide();
-            this.onFinish();
-        }
-        
-        setTimeout($.proxy(finish, this), 500);
+    if (this.processed == this.total) {
+        setTimeout($.proxy(this.finish, this), 500);
     }
 }
