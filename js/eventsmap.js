@@ -67,7 +67,7 @@ EventsMap.prototype.showInfoWindow = function(cluster) {
     var markers = cluster.getMarkers(); 
     for (var i = 0; i < markers.length; i++) {
         var event = markers[i].event;
-        table.addRow([event.startDate.toLocaleDateString(), event.artist, event.venue, event.city, event.country]);
+        table.addRow([event.startDate.toLocaleDateString(), "<a href=\"" + event.url.songkick + "\" target=\"_blank\">" + event.artist + "</a>", event.venue, event.city, event.country]);
     }
     
     this.infoWindow.setContent('<div class="info-window">' + table.build() + "</div>");
