@@ -2,8 +2,8 @@
  * Initializes the document.
  */
 $(document).ready(function() {
-    var eventsMap = new EventsMap();
-    initializeSearchBox(eventsMap);
+    var eventsMap = new EventsMap(); 
+    initializeSearchBox(eventsMap);    
 })
 
 /**
@@ -11,6 +11,7 @@ $(document).ready(function() {
  **/
 function initializeSearchBox(eventsMap) {
     $("#search-button").click(function() {
+        window.location.hash = $("#search-box").val();
         $("#search-button").addClass("disabled");
         $("#search-box").attr("disabled", "");
         $("#search-box").blur();
@@ -47,4 +48,11 @@ function initializeSearchBox(eventsMap) {
             $("#search-button").click();
         }
     });
+
+    var hash = window.location.hash.slice(1);
+
+    if (hash) {
+        $("#search-box").val(hash);
+        $("#search-button").click();
+    }    
 }
