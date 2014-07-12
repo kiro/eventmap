@@ -37,7 +37,10 @@ EventsList.prototype.addEvent = function(songkickArtist, songkickEvent) {
         city : city,
         country : country,
         startDate : new Date(songkickEvent.start ? songkickEvent.start.date : Date.now()),
-        tags: songkickArtist.tags        
+        tags: songkickArtist.tags,
+        url: {
+            songkick: songkickEvent.uri        
+        }     
     }
     
     this.events.push(event);
