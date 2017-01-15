@@ -62,15 +62,25 @@ EventsMap.prototype.clear = function() {
  * Shows an InfoWindow with the information for all events in a cluster.
  */
 EventsMap.prototype.showInfoWindow = function(cluster) {
-    var table = new TableBuilder(["Date", "Artist", "Venue", "City", "Country"], 'tablesorter')
+    var table = new TableBuilder(["Date", "Artist", "Venue", "City", "Country"], 'tablesorter');
     
     var markers = cluster.getMarkers(); 
     for (var i = 0; i < markers.length; i++) {
         var event = markers[i].event;
-        table.addRow([event.startDate.toLocaleDateString(), "<a href=\"" + event.url.songkick + "\" target=\"_blank\">" + event.artist + "</a>", event.venue, event.city, event.country]);
+        var d = event.startDate;
+        var dateString = ("0"+(d.getMonth()+1)).slice(-2) + "/" + ("0" + d.getDate()).slice(-2) + "/" + d.getFullYear();
+        table.addRow([dateString, "<a href=\"" + event.url.songkick + "\" target=\"_blank\">" + event.artist + "</a>", event.venue, event.city, event.country]);
     }
     
     this.infoWindow.setContent('<div class="info-window">' + table.build() + "</div>");
-    this.infoWindow.open(this.map, markers[0]);
+    // put the info window at a bogus marker
+    var center = {lat: cluster.getCenter().lat(), lng: cluster.getCenter().lng()};
+    var image = {
+        url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+        size: new google.maps.Size(0, 0),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(0, 0)
+    }; 
+    this.infoWindow.open(this.map, new google.maps.Marker({position: center, map: this.map, icon: image}));
     $('.tablesorter').tablesorter();
 }

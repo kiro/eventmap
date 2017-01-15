@@ -29,7 +29,7 @@ Status.prototype.setTotal = function(total) {
 Status.prototype.increment = function(info) {
     this.processed++;
 
-    if (this.processed / this.total * 100 > 98 && this.processed < this.total) {
+    if (this.processed / this.total * 100 > 90 && this.processed < this.total) {
         window.clearTimeout(this.timeout);
         this.timeout = window.setTimeout($.proxy(this.finish, this), 2000)
     }
