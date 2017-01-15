@@ -46,7 +46,7 @@ Songkick.prototype.showEventsForTrackerArtists = function(onFinish) {
         }
     }
     
-    this.forEachItem({url:trackingsUrl, processItem:showEvents, onStart:initializeStatus});
+    this.forEachItem({url:trackingsUrl, processItem:showEvents, onStart:initializeStatus, hide: function() { status.finish() } });
 }
 
 /**
@@ -76,11 +76,16 @@ Songkick.prototype.forEachItem = function(params) {
                
         processPage(firstPage);                     
         for (var page = 2; page <= totalPages; page++) {
-            $.getJSON(params.url + "&page=" + page, processPage);
+            $.getJSON(params.url + "&page=" + page, processPage).fail(function(e) {
+                params.hide();
+            });
         }
     }
     
-    $.getJSON(params.url, forEachPage);
+    $.getJSON(params.url, forEachPage).fail(function(e) {
+        console.log(e);
+        params.hide();
+    });
 }
 
 
